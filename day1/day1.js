@@ -1,5 +1,5 @@
 const fs = require('fs');
-let fileContent = fs.readFileSync('AdventOfCode/day1/day1input.txt');
+let fileContent = fs.readFileSync('AdventOfCode2023/day1/day1input.txt');
 let fileContentAsString = fileContent.toString();
 let inputArray = fileContentAsString.split('\n');
 
