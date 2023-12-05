@@ -1,39 +1,44 @@
 const fs = require('fs');
-const path = require('path');
-// let fileContent = fs.readFileSync('AdventOfCode2023/day2/day2input.txt');
 
-const fs = require('fs');
-const path = require('path');
+let day2data;
 
-const convertTextToJSON = (inputFilePath) => {
-  const outputFile = path.join(__dirname, 'output.json');
+// import data from day2input.json
+try {
+  const data = fs.readFileSync('day2input.json', 'utf8');
+  day2data = JSON.parse(data);
+} catch (err) {
+  console.error(err)
+}
 
-  fs.readFile(inputFilePath, 'utf8', (err, data) => {
-    if (err){
-      console.error("an error occured reading the file:", err);
-      return;
-    }
+// count all the reds, greens, and blues in each game
 
-    let jsonObj = data.split('\n').map(line => {
-      return { 'data': line.trim()}; // This is the data structure you'll need to set manually.
-  })
+for (let i = 0; i < day2data.length; i++) {
+  let game = day2data[i];
+  let gameID = Object.keys(game)[0];
+  let gameRolls = game[gameID];
+  let gameIDSum = 0;
 
-  fs.writeFile(outputFile, JSON.stringify(jsonObj, null, 4), 'utf8', (err) => {
-    if (err) {
-      console.error("an error occured writing the json file:", err)
-    } else {
-      console.log(`The JSON file has been saved to ${outputFile}`);
-    }
+  let redCount = 0;
+  let greenCount = 0;
+  let blueCount = 0;
+
+  Object.keys(gameRolls).forEach(roll => {
+    redCount += gameRolls[roll]['Red'] || 0;
+    greenCount += gameRolls[roll]['Green'] || 0;
+    blueCount += gameRolls[roll]['Blue'] || 0;
   });
-})};
+
+  // console.log(`Game ${gameID} had ${redCount} reds, ${greenCount} greens, and ${blueCount} blues`);
+
+  if (greenCount <= 12){
+    gameIDSum += gameID;
+    console.log(`Game ${gameID} had ${greenCount}. The gameIDSum is now: ${gameIDSum}`)
+  }
+};
 
 
 
-// Replace 'input.txt' with the path to your text file
-convertTextToJSON('day2/day2input.txt');
-
-
-
+  // if a game had 12 red cubes, AND 13 green cubes, AND 11 blue cubes, it is a possible game, and to add the value of the sum id towards a total sum. For example, if game 1 was valid, and game 3 was valid, the total sum of IDs is 4
 
 /*
  each game is listed with an id number, followed by a semi-colon seperated
